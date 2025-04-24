@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<!---maintain only the necessary test for the sanity check-->
+<suite name="Opencart Test Regression Suite" verbose="4" thread-count="5" parallel="tests">
+	<test name="Loging Page Test">
+		<parameter name="browser" value="chrome" />
+		<classes>
+			<class name="com.qa.opencart.tests.LoginPageTest" />
+		</classes>
+	</test>
+</suite>
