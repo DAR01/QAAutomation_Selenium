@@ -39,6 +39,7 @@ public class LoginPage {
 		return url;
 	}
 
+	//this is a boolean cheack of forgotten password
 	public boolean isForgotPwdLinkExist() {
 		return eleUtil.isElementDisplayed(forgotPwdLink);
 	}
