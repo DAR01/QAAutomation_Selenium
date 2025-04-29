@@ -3,6 +3,7 @@ package com.qa.opencart.tests;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
+import com.aventstack.chaintest.plugins.ChainTestListener;
 import com.qa.opencart.base.BaseTest;
 import com.qa.opencart.pages.AccountsPage;
 
@@ -14,6 +15,7 @@ public class LoginPageTest extends BaseTest{
 	@Test
 	public void loginPageTitleTest() {
 		String actTitle = loginPage.getLoginPageTitle();
+		ChainTestListener.log("checking login page title example");
 		Assert.assertEquals(actTitle, LOGIN_PAGE_TITLE);
 	}
 

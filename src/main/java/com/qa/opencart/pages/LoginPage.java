@@ -6,6 +6,8 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
 import static  com.qa.opencart.constants.AppConstants.*;
+
+import com.aventstack.chaintest.plugins.ChainTestListener;
 import com.qa.opencart.utils.ElementUtil;
 
 public class LoginPage {
@@ -49,6 +51,7 @@ public class LoginPage {
 		eleUtil.waitForElementVisible(email, MEDIUM_DEFAULT_TIMEOUT).sendKeys(username);
 		eleUtil.doSendKeys(password, pwd);
 		eleUtil.doClick(loginBtn);
+		ChainTestListener.log("login the locator example : " + email + password);
 		//after clicking on login button ---> landing on Accounts Page
 		//responsible to return the AccountsPage class object
 		return new AccountsPage(driver);
