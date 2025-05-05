@@ -4,24 +4,26 @@
 <suite name="Opencart Test Regression Suite" verbose="4" thread-count="5"
 	parallel="tests">
 	<!--if listener annotation is not added to the basetest file, you can as well add it hier in the xml file.-->
-	<!--listeners>
-<listener class-name="om.aventstack.chaintest.plugins.ChainTestListener"></listener>
-</listeners-->
+	<listeners>
+		<!--listener class-name= "com.aventstack.chaintest.plugins.ChainTestListener"/-->
+		<listener class-name="com.qa.opencart.listeners.TestAllureListener"/>
+		<!--listener class-name="com.qa.opencart.listeners.AnnotationTransformer"/-->
+	</listeners>
 
 
-	<!--<test name="Loging Page Test">
+	<!--test name="Loging Page Test">
 		<parameter name="browser" value="chrome" />
 		<classes>
 			<class name="com.qa.opencart.tests.LoginPageTest" />
 		</classes>
-	</test>-->
+	</test-->
 
 	<!--<test name="Loging Page Test_firefox">
 		<parameter name="browser" value="firefox" />
 		<classes>
 			<class name="com.qa.opencart.tests.LoginPageTest" />
 		</classes>
-	</test>-->
+	</test-->
 
 	<test name="Loging Page Test_edge">
 		<parameter name="browser" value="edge" />

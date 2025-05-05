@@ -10,6 +10,8 @@ import static  com.qa.opencart.constants.AppConstants.*;
 import com.aventstack.chaintest.plugins.ChainTestListener;
 import com.qa.opencart.utils.ElementUtil;
 
+
+
 public class LoginPage {
 	private WebDriver driver;
 	private ElementUtil eleUtil;
@@ -29,12 +31,14 @@ public class LoginPage {
 	}
 
 	// 3. public page actions/methods
+	
 	public String getLoginPageTitle() {
 		String title = eleUtil.waitForTitleIs(LOGIN_PAGE_TITLE, DEFAULT_TIMEOUT);
 		System.out.println("login page title: " + title);
 		return title;
 	}
 
+	
 	public String getLoginPageURL() {
 		String url = eleUtil.waitForURLContains(LOGIN_PAGE_FRACTION_URL, DEFAULT_TIMEOUT);
 		System.out.println("login page url: " + url);
