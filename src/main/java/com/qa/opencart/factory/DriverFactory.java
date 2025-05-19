@@ -4,17 +4,22 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.util.Properties;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.remote.*;
+//import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.safari.SafariDriver;
+import java.net.URL;
 
 import com.qa.opencart.exceptions.BrowserException;
 import com.qa.opencart.exceptions.FrameworkException;
@@ -28,9 +33,10 @@ public class DriverFactory {
 	//
 	public static ThreadLocal<WebDriver> tDriver = new ThreadLocal<WebDriver>();
 	public static String highlight;
-	
+
 	public static final Logger log = LogManager.getLogger(DriverFactory.class);
-			//info, warn, error, fatal
+
+	// info, warn, error, fatal
 	/**
 	 * Tis method is used to init browser on the basis of the supplied browser name.
 	 * 
@@ -44,12 +50,19 @@ public class DriverFactory {
 		highlight = prop.getProperty("highlight");
 		// System.out.println("browser name :" + browserName);
 		log.info("browserName: " + browserName);
-		
+
 		switch (browserName.toLowerCase().trim()) {
+
 		case "chrome":
-			// this allow to bypass the race condition, as every thread will have their own
-			// copy of the threadlocal generic which in this case is the webdriver
-			tDriver.set(new ChromeDriver(optionsManager.getChromeOptions()));
+			if (Boolean.parseBoolean(prop.getProperty("remote"))) {
+				// relocate the logic of controlling the run location/infrastructure
+				// in a dedicated method: run on remote/selenium grid server/aws/machine
+				initiRemoteDriver("chrome");
+			} else {
+				// this allow to bypass the race condition, as every thread will have their own
+				// copy of the threadlocal generic which in this case is the webdriver
+				tDriver.set(new ChromeDriver(optionsManager.getChromeOptions()));
+			}
 			// driver = new ChromeDriver(optionsManager.getChromeOptions());
 			break;
 		case "safari":
@@ -57,18 +70,34 @@ public class DriverFactory {
 			// driver = new SafariDriver();
 			break;
 		case "edge":
-			tDriver.set(new EdgeDriver(optionsManager.getEdgeOptions()));
+			if (Boolean.parseBoolean(prop.getProperty("remote"))) {
+				// relocate the logic of controlling the run location/infrastructure
+				// in a dedicated method: run on remote/selenium grid server/aws/machine
+				initiRemoteDriver("edge");
+			} else {
+				// this allow to bypass the race condition, as every thread will have their own
+				// copy of the threadlocal generic which in this case is the webdriver
+				tDriver.set(new EdgeDriver(optionsManager.getEdgeOptions()));
+			}
 			// driver = new EdgeDriver(optionsManager.getEdgeOptions());
 			break;
 		case "firefox":
-			tDriver.set(new FirefoxDriver(optionsManager.getFirefoxOptions()));
+			if (Boolean.parseBoolean(prop.getProperty("remote"))) {
+				// relocate the logic of controlling the run location/infrastructure
+				// in a dedicated method: run on remote/selenium grid server/aws/machine
+				initiRemoteDriver("firefox");
+			} else {
+				// this allow to bypass the race condition, as every thread will have their own
+				// copy of the threadlocal generic which in this case is the webdriver
+				tDriver.set(new FirefoxDriver(optionsManager.getFirefoxOptions()));
+			}
 			// driver = new FirefoxDriver(optionsManager.getFirefoxOptions());
 			break;
 		default:
-			System.out.println("Please enter valid browser name ..." + browserName);
+			// System.out.println("Please enter valid browser name ..." + browserName);
+			log.error("plz pass the valid browser name..." + browserName);
 			log.warn("properties: " + prop);
 			throw new BrowserException("==== INVALID BROWSER====");
-
 		}
 		// first try with hard coded url:
 		// driver.get("https://naveenautomationlabs.com/opencart/index.php?route=account/login");
@@ -77,6 +106,41 @@ public class DriverFactory {
 		getDriver().manage().deleteAllCookies();
 		return getDriver();
 
+	}
+
+	/**
+	 * controls the remote web driver browser based on remotewebdriver url and
+	 * options from optionsManager
+	 * 
+	 * @param browserName
+	 */
+	private void initiRemoteDriver(String browserName) {
+		switch (browserName) {
+		case "chrome":
+			try {
+				tDriver.set(
+						new RemoteWebDriver(new URL(prop.getProperty("huburl")), optionsManager.getChromeOptions()));
+			} catch (MalformedURLException e) {
+				e.printStackTrace();
+			}
+			break;
+		case "firefox":
+			try {
+				tDriver.set(
+						new RemoteWebDriver(new URL(prop.getProperty("huburl")), optionsManager.getFirefoxOptions()));
+			} catch (MalformedURLException e) {
+				e.printStackTrace();
+			}
+			break;
+
+		case "edge":
+			try {
+				tDriver.set(new RemoteWebDriver(new URL(prop.getProperty("huburl")), optionsManager.getEdgeOptions()));
+			} catch (MalformedURLException e) {
+				e.printStackTrace();
+			}
+			break;
+		}
 	}
 
 	/**
