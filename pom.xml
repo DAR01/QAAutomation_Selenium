@@ -18,7 +18,7 @@
 		<maven.compiler.target>17</maven.compiler.target>
 		<allure.version>2.24.0</allure.version>
 		<aspectj.version>1.9.20.1</aspectj.version>
-		<suiteXmlFile>testng_regression.xml</suiteXmlFile>
+		<suiteXmlFile>./src/test/resources/testrunners/testng_regression.xml</suiteXmlFile>
 	</properties>
 
 	<dependencyManagement>
@@ -118,7 +118,7 @@
 					<suiteXmlFiles>
 						<!--forkCount>3</forkCount-->
 						<!--reuseForks>true</reuseForks-->
-						<!--suiteXmlFile>./src/test/resources/testrunners/testng_regression.xml</suiteXmlFile-->
+						<suiteXmlFile>./src/test/resources/testrunners/testng_regression.xml</suiteXmlFile>
 						<suiteXmlFile>${suiteXmlFile}</suiteXmlFile>	
 					</suiteXmlFiles>
 					<argLine>
