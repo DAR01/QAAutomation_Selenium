@@ -18,7 +18,8 @@
 		<maven.compiler.target>17</maven.compiler.target>
 		<allure.version>2.24.0</allure.version>
 		<aspectj.version>1.9.20.1</aspectj.version>
-		<suiteXmlFile>./src/test/resources/testrunners/testng_regression.xml</suiteXmlFile>
+		<defaultSuiteFiles>./src/test/resources/testrunners/testng_regression.xml</defaultSuiteFiles>
+		<suiteFile>${defaultSuiteFiles}</suiteFile>
 	</properties>
 
 	<dependencyManagement>
@@ -118,8 +119,8 @@
 					<suiteXmlFiles>
 						<!--forkCount>3</forkCount-->
 						<!--reuseForks>true</reuseForks-->
-						<suiteXmlFile>./src/test/resources/testrunners/testng_regression.xml</suiteXmlFile>
-						<suiteXmlFile>${suiteXmlFile}</suiteXmlFile>	
+						<!--<suiteXmlFile>./src/test/resources/testrunners/testng_regression.xml</suiteXmlFile>-->
+						<suiteXmlFile>${suiteFile}</suiteXmlFile>	
 					</suiteXmlFiles>
 					<argLine>
 						-javaagent:"${settings.localRepository}/org/aspectj/aspectjweaver/${aspectj.version}/aspectjweaver-${aspectj.version}.jar"

@@ -41,16 +41,17 @@ public class BaseTest {
 	
 	public static final Logger log = LogManager.getLogger(DriverFactory.class);
 
-	@Parameters({ "browser" }) // to define the browser name to be used defined/from xml suite
+	@Parameters({ "browser" , "browserVersion","testname"}) // to define the browser name to be used defined/from xml suite
 	@BeforeTest
-	public void setup(String browserName) {
+	public void setup(String browserName, String browserVersion, String testname) {
 		df = new DriverFactory();
 		prop = df.initProp();
 
 		// browser name is parse from the .xml testng file
 		if (browserName != null) {
 			prop.setProperty("browser", browserName); // the change is done on the fly, @ runtime without permanently
-														// changing the value of the browser in the config.prop
+			prop.setProperty("browserVersion", browserVersion);
+			prop.setProperty("testname", testname);// changing the value of the browser in the config.prop
 		}
 
 		// first attemp of implementation: driver = df.initDriver("chrome");
